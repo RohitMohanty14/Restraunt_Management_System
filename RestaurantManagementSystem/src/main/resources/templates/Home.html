@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Restaurant</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+	</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+    <div class="container my-2">
+		<div sec:authorize="isAuthenticated()" style="display: flex; justify-content: end;">
+		    Welcome, <strong sec:authentication="principal.username">User</strong>
+		</div>
+        <div class="text-center">	
+            <h1>Our Menu</h1>
+            <p>Delicious food waiting for you</p>
+        </div>
+		
+		<div th:if="${message != null or error != null}"
+		     th:class="${message != null} ? 'alert alert-success text-center' : 'alert alert-danger text-center'"
+		     th:text="${message != null} ? ${message} : ${error}">
+		</div>
+         <div th:if="${display}" class="alert alert-display text-center" th:text="${display}"></div>
+		  <div class="grid-container">
+            <div class="card" th:each="menu : ${menuList}">
+                <div class="card-content">
+                    <h3 th:text="${menu.itemName}">Item Name</h3>
+                    <p><strong th:text="${menu.category}">Category</strong></p>
+                    <p th:text="${menu.description}">Description of the food item.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="price" th:text="'₹' + ${#numbers.formatDecimal(menu.price, 1, 'COMMA', 2, 'POINT')}">₹150.00</span>
+					<div sec:authorize="isAuthenticated()">
+					     <form th:action="@{/User/Order/addToCart}" method="post" style="margin: 0;">
+					         <input type="hidden" name="menuId" th:value="${menu.menuId}"/>
+					         <button type="submit" class="btn">Add to Cart</button>
+					     </form>
+					 </div>
+
+					 <div sec:authorize="isAnonymous()">
+					    <button class="btn"> <a th:href="@{/User/login}" style="text-decoration: none; color: #fff;">Add to Cart</a></button>
+					 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

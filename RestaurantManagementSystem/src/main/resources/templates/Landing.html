@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to RESTHO</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/landing.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="landing-main">
+        <div class="landing-container">
+            <div class="rating-banner">
+                <span>💖 Loved by 2.6k users with 4.9 rating</span>
+            </div>
+            <h1 class="landing-title">
+                Welcome to RESTHO Where<br>Flavor Meets Excellence!
+            </h1>
+            <a th:href="@{/User/Menu/Home}" class="btn btn-menu">
+                View Menu <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

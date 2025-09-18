@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Reservations</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+    <div class="container my-2" style="min-height: 50vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>My Table Reservations</h2>
+            <a th:href="@{/User/Table/new}" class="btn">New Reservation</a>
+        </div>
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+        <div th:if="${#lists.isEmpty(reservations)}" class="text-center">
+			<img th:src="@{/images/Emptyy.png}" class="empty-img"/>	
+			<p>You have no reservations.</p>
+		</div>
+		<div class="table-container">
+        <table class="content-table" th:if="${not #lists.isEmpty(reservations)}">
+            <thead><tr><th>Reservation ID</th><th>Date & Time</th><th>Number of People</th><th>Action</th></tr></thead>
+            <tbody>
+                <tr th:each="res : ${reservations}">
+                    <td th:text="${res.id}"></td>
+                    <td th:text="${#temporals.format(res.reservationTime, 'dd-MMM-yyyy HH:mm')}"></td>
+                    <td th:text="${res.peopleNumber}"></td>
+                    <td>
+                         <form th:action="@{/User/Table/delete/{id}(id=${res.id})}" method="post" style="display:inline;">
+                             <button type="submit" class="btn btn-danger" onclick="return confirm('Cancel this reservation?')">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+		</div>
+    </div>
+	<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

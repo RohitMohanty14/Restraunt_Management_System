@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Admin - View Reservations</title><link rel="stylesheet" th:href="@{/css/styles.css}"></head>
+<body>
+ 	<div th:replace="~{fragments/header :: header}"></div>
+    <div class="container my-2">
+        <h2>All Table Reservations</h2>
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+		<div class="table-container">
+        <table class="content-table">
+            <thead><tr><th>Res. ID</th><th>User Email</th><th>Date & Time</th><th>Guests</th><th>Actions</th></tr></thead>
+            <tbody>
+                <tr th:each="res : ${reservations}">
+                    <td th:text="${res.id}"></td><td th:text="${res.user.email}"></td>
+                    <td th:text="${#temporals.format(res.reservationTime, 'dd-MMM-yyyy HH:mm')}"></td><td th:text="${res.peopleNumber}"></td>
+                    <td>
+                        <form th:action="@{/Admin/Table/delete/{id}(id=${res.id})}" method="post" style="display:inline;">
+                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+		</div>
+    </div>
+</body>
+</html>

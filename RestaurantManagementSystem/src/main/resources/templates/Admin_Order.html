@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Admin - View Orders</title><link rel="stylesheet" th:href="@{/css/styles.css}"></head>
+<body>
+  	<div th:replace="~{fragments/header :: header}"></div>
+    <div class="container my-2">
+        <h2>All Customer Orders</h2>
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+		<div class="table-container">
+		<table class="content-table">
+            <thead><tr><th>Order ID</th><th>User Email</th><th>Item Name</th><th>Quantity</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.orderId}"></td><td th:text="${order.user.email}"></td><td th:text="${order.menu.itemName}"></td><td th:text="${order.quantity}"></td>
+                    <td><span th:text="${order.billing == null} ? 'In Cart' : 'Billed'" th:style="${order.billing == null} ? 'color:orange' : 'color:green'"></span></td>
+                    <td>
+                        <form th:action="@{/Admin/Order/delete/{id}(id=${order.orderId})}" method="post" style="display:inline;">
+                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+		</div>
+    </div>
+</body>
+</html>

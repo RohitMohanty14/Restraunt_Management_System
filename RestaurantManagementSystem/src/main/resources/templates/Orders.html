@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Orders</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+	<div th:replace="~{fragments/header :: header}"></div>
+  <div class="container my-2" style="min-height: 50vh;">
+      <h2>All Orders</h2>
+      <div class="table-container">
+          <div th:if="${invoice == null or #lists.isEmpty(invoice.?[billing != null])}" style="text-align:center;">
+              <img th:src="@{/images/Emptyorder.png}" class="empty-img"/>
+              <p>No orders Found.</p>
+          </div>
+          <table class="content-table" 
+                 th:if="${invoice != null and !#lists.isEmpty(invoice.?[billing != null])}">
+              <thead>
+                  <tr>
+					  <th>#Order ID</th>
+                      <th>Invoice Number</th>
+                      <th>Item Name</th>
+                      <th>Quantity</th>
+					  <th>Price</th>
+					  <th>Billing Date</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr th:each="order : ${invoice.?[billing != null]}">
+					  <td th:text="'#' + ${order.orderId}"></td>
+                      <td th:text="${order.billing.invoiceNumber}"></td>
+                      <td th:text="${order.menu.itemName}"></td>
+                      <td th:text="${order.quantity}"></td>
+					  <td th:text="${order.billing.totalAmount}"></td>
+					  <td th:text="${#temporals.format(order.billing.billingDate, 'dd-MM-yyyy')}"></td>
+                   
+                  </tr>
+              </tbody>
+          </table>
+
+      </div>
+  </div>
+  <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
